@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>Uniform Catalog</h1>
+<ul>
+    {% for uniform in uniforms %}
+    <li>{{ uniform.school_name }} - {{ uniform.color_code }} - ${{ uniform.price }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
