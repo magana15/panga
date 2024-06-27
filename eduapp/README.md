@@ -71,5 +71,3 @@ EduWear/
 ```sh
 python -m unittest discover tests
 
-
-
