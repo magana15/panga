@@ -7,7 +7,7 @@ app.app_context().push()
 db.create_all()
 @app.shell_context_processor
 def make_shell_context():
-    return {'db': db, 'User': User, 'Uniform': Uniform, 'Feedback': Feedback, 'Order': Order}
+    return {'db': db, 'User': User, 'Uniform': Uniform, 'Feedback': Feedback, 'Order': Order,'CartItem': CartItem}
 
 if __name__ == '__main__':
     
