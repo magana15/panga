@@ -18,8 +18,30 @@ def size_guide():
 @app.route('/order', methods=['GET', 'POST'])
 def order():
     if request.method == 'POST':
-        # Process order
-        pass
+        user_id = session.get('user_id')
+        if not user_id:
+            flash('Please log in to place an order.')
+            return redirect(url_for('index'))
+
+        cart_items = CartItem.query.filter_by(user_id=user_id).all()
+        if not cart_items:
+            flash('Your cart is empty.')
+            return redirect(url_for('catalog'))
+
+        for item in cart_items:
+            order = Order(
+                user_id=user_id,
+                uniform_id=item.uniform_id,
+                quantity=item.quantity,
+                total_price=item.quantity * item.uniform.price,
+            )
+            db.session.add(order)
+            db.session.delete(item)
+
+        db.session.commit()
+        flash('Order placed successfully.')
+        return redirect(url_for('index'))
+    
     return render_template('order.html')
 
 @app.route('/feedback', methods=['GET', 'POST'])
@@ -32,3 +54,6 @@ def feedback():
 @app.route('/color_verification')
 def color_verification():
     return render_template('color_verification.html')
+
+
+

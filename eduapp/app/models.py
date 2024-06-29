@@ -30,3 +30,10 @@ class Order(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     total_price = db.Column(db.Float, nullable=False)
     status = db.Column(db.String(20), default='Pending')
+
+
+class CartItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    uniform_id = db.Column(db.Integer, db.ForeignKey('uniform.id'), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
