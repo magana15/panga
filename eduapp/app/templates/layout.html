@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduWear</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    {% block head %}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/catalog.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/cart.css') }}">
+    {% endblock %}
 </head>
 <body>
     <header>
@@ -16,6 +21,13 @@
                 <li><a href="{{ url_for('order') }}">Order</a></li>
                 <li><a href="{{ url_for('feedback') }}">Feedback</a></li>
                 <li><a href="{{ url_for('color_verification') }}">Color Verification</a></li>
+                <!-- Cart icon -->
+                <li class="cart-link">
+                    <a href="{{ url_for('cart') }}">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-badge">3</span>
+                    </a>
+                </li>
             </ul>
         </nav>
     </header>
@@ -27,3 +39,4 @@
     </footer>
 </body>
 </html>
+
