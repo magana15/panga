@@ -1,4 +1,5 @@
 from app import db
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -9,13 +10,26 @@ class User(db.Model):
     feedbacks = db.relationship('Feedback', backref='user', lazy=True)
     orders = db.relationship('Order', backref='user', lazy=True)
 
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
 class Uniform(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    school_name = db.Column(db.String(120), nullable=False)
-    color_code = db.Column(db.String(7), nullable=False)  # Hex color code
-    size = db.Column(db.String(20), nullable=False)
+    school_name = db.Column(db.String(100), nullable=False)
+    size = db.Column(db.String(50), nullable=False)
+    color_code = db.Column(db.String(7), nullable=False)
     price = db.Column(db.Float, nullable=False)
-    in_stock = db.Column(db.Boolean, default=True)
+    photo_url = db.Column(db.String(200), nullable=True)
+
+    def __init__(self, school_name, size, color_code, price, photo_url):
+        self.school_name = school_name
+        self.size = size
+        self.color_code = color_code
+        self.price = price
+        self.photo_url = photo_url
 
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -37,3 +51,4 @@ class CartItem(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     uniform_id = db.Column(db.Integer, db.ForeignKey('uniform.id'), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
+    uniform = db.relationship('Uniform', backref='cart_items')
