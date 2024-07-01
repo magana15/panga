@@ -1,4 +1,5 @@
 from app import db
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -50,3 +51,4 @@ class CartItem(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     uniform_id = db.Column(db.Integer, db.ForeignKey('uniform.id'), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
+    uniform = db.relationship('Uniform', backref='cart_items')
