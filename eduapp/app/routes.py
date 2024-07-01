@@ -40,7 +40,8 @@ def order():
 
         db.session.commit()
         flash('Order placed successfully.')
-        return redirect(url_for('index'))
+        orders = Order.query.filter_by(user_id=user_id).all()
+        return render_template(url_for('order.html', orders=orders))
     
     return render_template('order.html')
 
