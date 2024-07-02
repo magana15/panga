@@ -44,6 +44,7 @@ class Order(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     total_price = db.Column(db.Float, nullable=False)
     status = db.Column(db.String(20), default='Pending')
+    uniform = db.relationship('Uniform', backref='orders')
 
 
 class CartItem(db.Model):

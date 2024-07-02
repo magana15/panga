@@ -1,7 +1,16 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<h1>Order Uniforms</h1>
-<p>Please review your cart and place your order.</p>
-{% include 'cart.html' %}
+{% if orders %}
+    <ul>
+        {% for order in orders %}
+        <li>
+            {{ order.uniform.school_name }} - {{ order.uniform.color_code }} - ${{ order.uniform.price }} x {{ order.quantity }}
+            = ${{ order.total_price }}
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>You have no orders.</p>
+{% endif %}
 {% endblock %}
