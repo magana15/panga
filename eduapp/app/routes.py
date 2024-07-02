@@ -1,6 +1,13 @@
 from flask import render_template, request, redirect, url_for,session,flash
-from app import app, db
+from flask_login import login_user, logout_user, current_user, login_required
+from app import app, db, login_manager
 from app.models import User, Uniform, Feedback, Order, CartItem
+from app.forms import LoginForm, RegistrationForm
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 @app.route('/')
 def index():
@@ -9,26 +16,36 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-
-        user = User.query.filter_by(username=username).first()
-
-        if user and user.check_password(password):
-            session['user_id'] = user.id
-            flash('Login successful!', 'success')
-            return redirect(url_for('index'))
-        else:
-            flash('Login unsuccessful. Please check your username and password.', 'error')
-
-    return render_template('login.html')
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None or not user.check_password(form.password.data):
+            flash('Invalid username or password')
+            return redirect(url_for('login'))
+        login_user(user, remember=form.remember_me.data)
+        return redirect(url_for('index'))
+    return render_template('login.html', title='Sign In', form=form)
 
 @app.route('/logout')
 def logout():
-    session.pop('user_id', None)
-    flash('You have been logged out.', 'info')
+    logout_user()
     return redirect(url_for('index'))
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Congratulations, you are now a registered user!')
+        return redirect(url_for('login'))
+    return render_template('register.html', title='Register', form=form)
 
 @app.route('/catalog')
 def catalog():
@@ -40,13 +57,11 @@ def size_guide():
     return render_template('size_guide.html')
 
 @app.route('/order', methods=['GET', 'POST'])
+@login_required
 def order():
-    user_id = session.get('user_id')
-    if not user_id:
-        flash('Please log in to place an order.')
-        return redirect(url_for('login'))
 
     if request.method == 'POST':
+        user_id = current_user.id
         cart_items = CartItem.query.filter_by(user_id=user_id).all()
         if not cart_items:
             flash('Your cart is empty.')
@@ -80,22 +95,18 @@ def color_verification():
     return render_template('color_verification.html')
 
 @app.route('/cart')
+@login_required
 def cart():
-    user_id = session.get('user_id')
-    if not user_id:
-        flash('Please log in to view your cart.')
-        return redirect(url_for('login'))
 
+    user_id = current_user.id
     cart_items = CartItem.query.filter_by(user_id=user_id).all()
     return render_template('cart.html', cart_items=cart_items)
 
 @app.route('/add_to_cart/<int:uniform_id>', methods=['POST'])
+@login_required
 def add_to_cart(uniform_id):
-    user_id = session.get('user_id')
-    if not user_id:
-        flash('Please log in to add items to your cart.')
-        return redirect(url_for('login'))
 
+    user_id = current_user.id
     quantity = int(request.form.get('quantity', 1))
     cart_item = CartItem.query.filter_by(user_id=user_id, uniform_id=uniform_id).first()
 
