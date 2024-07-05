@@ -1,6 +1,11 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+{% if current_user.is_authenticated %}
+<h4>hello {{current_user.username}}!</h4>
+{% else%}
+    <h4>hello!!</h4>
+{%endif%}
 <h1>Welcome to EduWear</h1>
 <p>Your trusted source for school uniforms.</p>
 {% endblock %}

@@ -1,5 +1,5 @@
 from flask import render_template, request, redirect, url_for,session,flash
-from flask_login import login_user, logout_user, current_user, login_required
+from flask_login import login_user, logout_user, current_user, login_required, UserMixin
 from app import app, db, login_manager
 from app.models import User, Uniform, Feedback, Order, CartItem
 from app.forms import LoginForm, RegistrationForm
@@ -13,20 +13,14 @@ def load_user(user_id):
 def index():
     return render_template('index.html')
 
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
-            return redirect(url_for('login'))
-        login_user(user, remember=form.remember_me.data)
-        return redirect(url_for('index'))
-    return render_template('login.html', title='Sign In', form=form)
+@app.route('/login/<int:id>', methods=['GET', 'POST'])
+def login(id):
+    user = User.query.get(id)
+    if user:
+        login_user(user)
+        return 'success'
+    else:
+        return 'no user is log'
 
 @app.route('/logout')
 def logout():
@@ -35,18 +29,19 @@ def logout():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
-        user.set_password(form.password.data)
+    if request.method == 'GET':
+        return render_template('register.html')
+    elif request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        hashed_password = bcrypt.generate_password_hash(password)
+
+        user = User(username=username, password=password)
+
         db.session.add(user)
         db.session.commit()
-        flash('Congratulations, you are now a registered user!')
-        return redirect(url_for('login'))
-    return render_template('register.html', title='Register', form=form)
-
+        return redirect(url_for('index'))
 @app.route('/catalog')
 def catalog():
     uniforms = Uniform.query.all()
@@ -120,6 +115,7 @@ def add_to_cart(uniform_id):
         cart_item = CartItem(user_id=user_id, uniform_id=uniform_id, quantity=int(quantity))
         db.session.add(cart_item)
 
+
     db.session.commit()
     flash('Item added to cart.')
     return redirect(url_for('catalog'))
@@ -138,8 +134,8 @@ def add_sample_data():
         Uniform(school_name='Masaku Secondary', size='XL', color_code='#FF5733', price=34.0, photo_url='masaku_secondary.jpg')
     ]
     users = [
-            User(id=120, username='magana', email='magana@mail.com', pasword_hash='magana', role='customer')
+            User(id=120, username='kijana', email='magana@mail.com', pasword_hash='kijana', role='customer')
         ]
     db.session.add_all(uniforms)
+    db.session.add_all(users)
     db.session.commit()
-    return "Sample data added!"
