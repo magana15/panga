@@ -3,23 +3,9 @@
 {% block content %}
 <h1>Register</h1>
 <form action="{{ url_for('register') }}" method="POST">
-    
-    <p>
-        {{ form.username.label }}<br>
-        {{ form.username(size=32) }}
-    </p>
-    <p>
-        {{ form.email.label }}<br>
-        {{ form.email(size=32) }}
-    </p>
-    <p>
-        {{ form.password.label }}<br>
-        {{ form.password(size=32) }}
-    </p>
-    <p>
-        {{ form.password2.label }}<br>
-        {{ form.password2(size=32) }}
-    </p>
-    <p>{{ form.submit() }}</p>
+	<input type="text" name="username" placeholder="Username" required="required"></br>
+	<input type="password" name="password" placeholder="password" required="required"></br>
+	<input type="email" name="email" placeholder="Email" required="required"></br>
+	<input type="submit" value="register">
 </form>
 {% endblock %}

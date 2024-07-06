@@ -1,9 +1,7 @@
 from flask import render_template, request, redirect, url_for,session,flash
 from flask_login import login_user, logout_user, current_user, login_required, UserMixin
-from app import app, db, login_manager
+from app import app, db, login_manager, bcrypt
 from app.models import User, Uniform, Feedback, Order, CartItem
-from app.forms import LoginForm, RegistrationForm
-
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -18,7 +16,7 @@ def login(id):
     user = User.query.get(id)
     if user:
         login_user(user)
-        return 'success'
+        return redirect(url_for('index'))
     else:
         return 'no user is log'
 
@@ -34,10 +32,11 @@ def register():
     elif request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
+        email = request.form.get('email')
 
         hashed_password = bcrypt.generate_password_hash(password)
 
-        user = User(username=username, password=password)
+        user = User(username=username, password=hashed_password)
 
         db.session.add(user)
         db.session.commit()
@@ -75,6 +74,7 @@ def order():
         db.session.commit()
         flash('Order placed successfully.')
         return redirect(url_for('order'))
+    user_id = current_user.id
     orders = Order.query.filter_by(user_id=user_id).all()
     return render_template('order.html', orders=orders)
 
@@ -134,8 +134,10 @@ def add_sample_data():
         Uniform(school_name='Masaku Secondary', size='XL', color_code='#FF5733', price=34.0, photo_url='masaku_secondary.jpg')
     ]
     users = [
-            User(id=120, username='kijana', email='magana@mail.com', pasword_hash='kijana', role='customer')
+            User(username='kijana', email='magana@mail.com', password='kijana', role='user')
         ]
     db.session.add_all(uniforms)
     db.session.add_all(users)
     db.session.commit()
+
+    return 'Sample data added successfully!'
