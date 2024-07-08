@@ -27,6 +27,12 @@ def login():
         else:
             return 'failed'
 
+
+@app.route('/admin')
+@login_required
+def admin():
+    return "this is an admin page"
+
 @app.route('/logout')
 def logout():
     logout_user()

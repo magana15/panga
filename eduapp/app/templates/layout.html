@@ -23,10 +23,10 @@
                 <li><a href="{{ url_for('color_verification') }}">Color Verification</a></li>
                 </ul>
 		<ul class="nav-right">
-                {% if session.get('user_id') %}
+                {% if session.get('user') %}
                 <li><a href="{{ url_for('logout') }}">Logout</a></li>
                 {% else %}
-                <li><a href="{{ url_for('register') }}">Login</a></li>
+                <li><a href="{{ url_for('login') }}">Login</a></li>
                 {% endif %}
                 <li class="cart-link">
                     <a href="{{ url_for('cart') }}">
