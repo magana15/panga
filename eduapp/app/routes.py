@@ -11,14 +11,21 @@ def load_user(user_id):
 def index():
     return render_template('index.html')
 
-@app.route('/login/<int:id>', methods=['GET', 'POST'])
-def login(id):
-    user = User.query.get(id)
-    if user:
-        login_user(user)
-        return redirect(url_for('index'))
-    else:
-        return 'no user is log'
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+    elif request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        user = User.query.filter(User.username == username).first()
+
+        if bcrypt.check_password_hash(user.password, password):
+            login_user(user)
+            return redirect(url_for('index'))
+        else:
+            return 'failed'
 
 @app.route('/logout')
 def logout():
