@@ -1,6 +1,9 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<h1>Color Verification</h1>
-<p>Verify the exact shade of uniform colors.</p>
+<div class="search-container">
+        <input type="text" id="search-box" placeholder="Search uniforms...">
+    </div>
+    <div id="results-container"></div>
+    <script src="{{ url_for('static', filename='color_verification.js') }}"></script>
 {% endblock %}
