@@ -1,0 +1,7 @@
+[2024-07-04 08:21:57 +0000] [96501] [INFO] Starting gunicorn 20.0.4
+[2024-07-04 08:21:57 +0000] [96501] [INFO] Listening at: http://127.0.0.1:8000 (96501)
+[2024-07-04 08:21:57 +0000] [96501] [INFO] Using worker: sync
+[2024-07-04 08:21:57 +0000] [96503] [INFO] Booting worker with pid: 96503
+[2024-07-04 08:22:56 +0000] [96501] [INFO] Handling signal: int
+[2024-07-04 08:22:56 +0000] [96503] [INFO] Worker exiting (pid: 96503)
+[2024-07-04 08:22:56 +0000] [96501] [INFO] Shutting down: Master

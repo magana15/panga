@@ -14,18 +14,24 @@
 <body>
     <header>
         <nav>
-            <ul>
+            <ul class="nav-left">
                 <li><a href="{{ url_for('index') }}">Home</a></li>
                 <li><a href="{{ url_for('catalog') }}">Catalog</a></li>
                 <li><a href="{{ url_for('size_guide') }}">Size Guide</a></li>
                 <li><a href="{{ url_for('order') }}">Order</a></li>
                 <li><a href="{{ url_for('feedback') }}">Feedback</a></li>
                 <li><a href="{{ url_for('color_verification') }}">Color Verification</a></li>
-                <!-- Cart icon -->
+                </ul>
+		<ul class="nav-right">
+                {% if session.get('user') %}
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                {% endif %}
                 <li class="cart-link">
                     <a href="{{ url_for('cart') }}">
                         <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-badge">3</span>
+			<span class="cart-count">{{ cart_count }}</span>
                     </a>
                 </li>
             </ul>

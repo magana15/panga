@@ -1,35 +1,59 @@
 from flask import render_template, request, redirect, url_for,session,flash
-from app import app, db
+from flask_login import login_user, logout_user, current_user, login_required, UserMixin
+from app import app, db, login_manager, bcrypt
 from app.models import User, Uniform, Feedback, Order, CartItem
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
+    if request.method == 'GET':
+        return render_template('login.html')
+    elif request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
 
-        user = User.query.filter_by(username=username).first()
+        user = User.query.filter(User.username == username).first()
 
-        if user and user.check_password(password):
-            session['user_id'] = user.id
-            flash('Login successful!', 'success')
+        if bcrypt.check_password_hash(user.password, password):
+            login_user(user)
             return redirect(url_for('index'))
         else:
-            flash('Login unsuccessful. Please check your username and password.', 'error')
+            return 'failed'
 
-    return render_template('login.html')
+
+@app.route('/admin')
+@login_required
+def admin():
+    return "this is an admin page"
 
 @app.route('/logout')
 def logout():
-    session.pop('user_id', None)
-    flash('You have been logged out.', 'info')
+    logout_user()
     return redirect(url_for('index'))
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'GET':
+        return render_template('register.html')
+    elif request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        email = request.form.get('email')
+
+        hashed_password = bcrypt.generate_password_hash(password)
+
+        user = User(username=username, password=hashed_password)
+
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('index'))
 @app.route('/catalog')
 def catalog():
     uniforms = Uniform.query.all()
@@ -40,13 +64,11 @@ def size_guide():
     return render_template('size_guide.html')
 
 @app.route('/order', methods=['GET', 'POST'])
+@login_required
 def order():
-    if request.method == 'POST':
-        user_id = session.get('user_id')
-        if not user_id:
-            flash('Please log in to place an order.')
-            return redirect(url_for('login'))
 
+    if request.method == 'POST':
+        user_id = current_user.id
         cart_items = CartItem.query.filter_by(user_id=user_id).all()
         if not cart_items:
             flash('Your cart is empty.')
@@ -64,9 +86,10 @@ def order():
 
         db.session.commit()
         flash('Order placed successfully.')
-        return redirect(url_for('index'))
-    
-    return render_template('order.html')
+        return redirect(url_for('order'))
+    user_id = current_user.id
+    orders = Order.query.filter_by(user_id=user_id).all()
+    return render_template('order.html', orders=orders)
 
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
@@ -80,22 +103,18 @@ def color_verification():
     return render_template('color_verification.html')
 
 @app.route('/cart')
+@login_required
 def cart():
-    user_id = session.get('user_id')
-    if not user_id:
-        flash('Please log in to view your cart.')
-        return redirect(url_for('login'))
 
+    user_id = current_user.id
     cart_items = CartItem.query.filter_by(user_id=user_id).all()
     return render_template('cart.html', cart_items=cart_items)
 
 @app.route('/add_to_cart/<int:uniform_id>', methods=['POST'])
+@login_required
 def add_to_cart(uniform_id):
-    user_id = session.get('user_id')
-    if not user_id:
-        flash('Please log in to add items to your cart.')
-        return redirect(url_for('login'))
 
+    user_id = current_user.id
     quantity = int(request.form.get('quantity', 1))
     cart_item = CartItem.query.filter_by(user_id=user_id, uniform_id=uniform_id).first()
 
@@ -108,6 +127,7 @@ def add_to_cart(uniform_id):
             return redirect(url_for('catalog'))
         cart_item = CartItem(user_id=user_id, uniform_id=uniform_id, quantity=int(quantity))
         db.session.add(cart_item)
+
 
     db.session.commit()
     flash('Item added to cart.')
@@ -127,8 +147,10 @@ def add_sample_data():
         Uniform(school_name='Masaku Secondary', size='XL', color_code='#FF5733', price=34.0, photo_url='masaku_secondary.jpg')
     ]
     users = [
-            User(id=120, username='magana', email='magana@mail.com', pasword_hash='magana', role='customer')
+            User(username='kijana', email='magana@mail.com', password='kijana', role='user')
         ]
     db.session.add_all(uniforms)
+    db.session.add_all(users)
     db.session.commit()
-    return "Sample data added!"
+
+    return 'Sample data added successfully!'

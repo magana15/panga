@@ -1,7 +1,6 @@
 from app import app, db
 from app.models import User, Uniform, Feedback, Order, CartItem
 
-
 app.app_context().push()
 
 db.create_all()
