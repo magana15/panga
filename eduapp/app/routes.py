@@ -23,7 +23,7 @@ def login():
 
         if bcrypt.check_password_hash(user.password, password):
             login_user(user)
-            return redirect(url_for('index'))
+            return redirect(url_for('catalog'))
         else:
             return 'failed'
 
