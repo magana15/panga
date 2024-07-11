@@ -1,0 +1,15 @@
+--2024-07-01 08:10:30--  https://www.google.com/imgres?q=sweaters%20uniform%20school
+Resolving www.google.com (www.google.com)... 172.253.62.106, 172.253.62.147, 172.253.62.99, ...
+Connecting to www.google.com (www.google.com)|172.253.62.106|:443... connected.
+HTTP request sent, awaiting response... 301 Moved Permanently
+Location: https://www.google.com/imghp [following]
+--2024-07-01 08:10:30--  https://www.google.com/imghp
+Reusing existing connection to www.google.com:443.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/html]
+Saving to: ‘imgres?q=sweaters uniform school’
+
+imgres?q=sweaters uniform school          [<=>                                                                    ]       0  --.-KB/s               imgres?q=sweaters uniform school          [ <=>                                                                   ]  19.38K  --.-KB/s    in 0s      
+
+2024-07-01 08:10:30 (75.1 MB/s) - ‘imgres?q=sweaters uniform school’ saved [19842]
+

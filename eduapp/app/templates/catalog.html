@@ -2,9 +2,22 @@
 
 {% block content %}
 <h1>Uniform Catalog</h1>
-<ul>
+
+<div class="catalog-container">
     {% for uniform in uniforms %}
-    <li>{{ uniform.school_name }} - {{ uniform.color_code }} - ${{ uniform.price }}</li>
+    <div class="uniform-card">
+        <img src="{{ url_for('static', filename='images/' ~ uniform.photo_url) }}" alt="{{ uniform.school_name }} uniform" class="uniform-photo">
+        <div class="uniform-details">
+            <p>School:{{ uniform.school_name }}</p>
+            <p>Size: {{ uniform.size }}</p>
+            <p>Price: ${{ uniform.price }}</p>
+            <form action="{{ url_for('add_to_cart', uniform_id=uniform.id) }}" method="POST">
+                <input class="quantity" type="number" name="quantity" value="1" min="1">
+                <button type="submit">Add to Cart</button>
+            </form>
+        </div>
+    </div>
     {% endfor %}
-</ul>
+</div>
+
 {% endblock %}
