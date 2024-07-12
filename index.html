@@ -1,1 +1,195 @@
-<h1>Hello there</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eduwear - The Ultimate School Uniform App</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background-image:url('landing_back1.jpg');
+        background-size: cover;
+        font-size: larger;
+        font-weight: bold;
+    }
+    .cover{
+        position: absolute;
+        right: 50px;
+        height: 800px;width: 900px;
+        background-image: url("school.jpg");
+        background-size:cover ;
+        background-repeat: no-repeat;
+    }
+    .container {
+        width: 80%;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    header {
+        background: linear-gradient(to right, #12c2e9, #c471ed, #ff6b6b);
+        color: #fff;
+        padding: 20px 0;
+    }
+    
+    header h1 {
+        margin: 0;
+        display: inline-block;
+    }
+    
+    nav ul {
+        list-style: none;
+        float: right;
+        margin: 0;
+    }
+    
+    nav ul li {
+        display: inline-block;
+        margin-left: 20px;
+    }
+    
+    nav ul li a {
+        color: #fff;
+        text-decoration: none;
+    }
+    
+    #hero {
+        background: #2fac23;
+        padding: 50px 0;
+        text-align: center;
+    }
+    
+    #hero h2 {
+        margin: 0;
+    }
+    
+    #hero p {
+        font-size: 1.2em;
+        margin: 10px 0;
+    }
+    
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background: #333;
+        color: #fff;
+        text-decoration: none;
+        margin: 10px;
+    }
+    
+    #about, #features, #testimonials, #signup {
+        padding: 50px 0;
+    }
+    
+    #features .feature {
+        margin-bottom: 20px;
+    }
+    
+    footer {
+        background: #333;
+        color: #fff;
+        text-align: center;
+        padding: 20px 0;
+    }
+    
+    footer ul {
+        list-style: none;
+        padding: 0;
+    }
+    
+    footer ul li {
+        display: inline-block;
+        margin-left: 10px;
+    }
+    
+    footer ul li a {
+        color: #fff;
+        text-decoration: none;
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Eduwear</h1>
+            <nav>
+                <ul>
+                    <li><a href="http://magana.stingrush.tech:5001/catalog">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section id="hero">
+        <div class="container">
+            <h2>The Ultimate School Uniform App</h2>
+            <p>Manage school uniforms effortlessly with Eduwear.</p>
+            <a href="#features" class="btn">Learn More</a>
+            <a href="#signup" class="btn">Get Started</a>
+        </div>
+    </section>
+    <section class="cover">
+        <div class="cover">
+            
+        </div>
+    </section>
+    <section id="about">
+        <div class="container">
+            <h2>About Eduwear</h2>
+            <p>Eduwear simplifies school uniform management for</br>administrators and parents. 
+                Our mission is to make uniform </br>procurement easy and efficient.</p>
+        </div>
+    </section>
+    <section id="features">
+        <div class="container">
+            <h2>Features</h2>
+            <div class="feature">
+                <h3>Upload Color Samples</h3>
+                <img src="school.jpg" alt="" height="200px">
+                <p>Easily upload and verify color samples for uniforms.</p>
+            </div>
+            <div class="feature">
+                <h3>Admin Management</h3>
+                <img src="school.jpg" alt="" height="200px">
+                <p>Admins can add uniforms and update prices seamlessly.</p>
+            </div>
+            <div class="feature">
+                <h3>Cart Feature</h3>
+                <img src="school.jpg" alt="" height="200px">
+                <p>Customers can select uniforms and quantities from a catalog</br> and view them in a cart.</p>
+            </div>
+        </div>
+    </section>
+    <section id="testimonials">
+        <div class="container">
+            <h2>Testimonials</h2>
+            <blockquote>
+                <p>"Eduwear has revolutionized how we manage our school's uniforms.</br>
+                     It's a game-changer!" - kamae School Administrator</p>
+            </blockquote>
+        </div>
+    </section>
+    <section id="signup">
+        <div class="container">
+            <h2>Get Started with Eduwear</h2>
+            <p>Sign up today and streamline your school's uniform management.</p>
+            <a href="http://magana.stingrush.tech:5001/register" class="btn">Sign Up Now</a>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Eduwear. All rights reserved.</p>
+            <ul>
+                <li><a href="#privacy">Privacy Policy</a></li>
+                <li><a href="#terms">Terms of Service</a></li>
+            </ul>
+        </div>
+    </footer>
+</body>
+</html>
+
