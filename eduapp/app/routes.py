@@ -148,3 +148,26 @@ def add_sample_data():
     db.session.commit()
 
     return 'Sample data added successfully!'
+
+
+#test verify
+@app.route('/search_school')
+def search_school():
+    return render_template('verify.html')
+
+@app.route('/search_suggestions')
+def search_suggestions():
+    query = request.args.get('q', '')
+    schools = School.query.filter(School.name.like(f'%{query}%')).all()
+    results = [{'name': school.name, 'image_url': url_for('static', filename=school.image_url)} for school in schools]
+    return jsonify(results)
+
+
+
+
+
+
+
+
+
+

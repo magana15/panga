@@ -4,67 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search School</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='color_verification.css') }}">
-    <style>
-        body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-
-.search-container {
-    text-align: center;
-}
-
-input[type="text"] {
-    width: 300px;
-    padding: 10px;
-    margin-top: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.suggestions-box {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    max-width: 300px;
-    margin: 0 auto;
-    position: absolute;
-    z-index: 1000;
-}
-
-.suggestion {
-    padding: 10px;
-    cursor: pointer;
-}
-
-.suggestion:hover {
-    background-color: #f0f0f0;
-}
-
-.result-container {
-    margin-top: 40px;
-}
-
-.result-container img {
-    max-width: 300px;
-    max-height: 300px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-}
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/verify.css') }}">
+    
 </head>
 <body>
     <div class="search-container">
         <h1>Search for a School</h1>
         <input type="text" id="school_name" placeholder="Enter school name" oninput="searchSchools()">
-        <div id="suggestions" class="suggestions-box"></div>
-        <div id="result" class="result-container"></div>
+        <div id="suggestions" class="suggestions-box">hello</div>
+        <div id="result" class="result-container">yes</div>
     </div>
     
     <script>
@@ -89,8 +37,12 @@ input[type="text"] {
             const resultContainer = document.getElementById('result');
             resultContainer.innerHTML = `
                 <h2>${school.name}</h2>
-                <img src="${vintage_secondary.jpg}" alt="${school.name} uniform">
+                <img src="${school.image_url}" alt="${school.name} uniform">
             `;
+            // Clear suggestions after selection
+            document.getElementById('suggestions').innerHTML = '';
+            // Clear input field after selection
+            document.getElementById('school_name').value = '';
         }
     </script>
 </body>
