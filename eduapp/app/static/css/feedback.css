@@ -55,3 +55,15 @@ button:hover {
 #comments{height: 100px;}
 #rating{height: 30px;width: 50px;}
 
+.flashes {
+    list-style-type: none;
+    padding: 0;
+}
+
+.flashes li.success {
+    color: green;
+}
+
+.flashes li.danger {
+    color: red;
+}

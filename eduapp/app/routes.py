@@ -85,12 +85,25 @@ def order():
     orders = Order.query.filter_by(user_id=user_id).all()
     grand_total = sum(order.total_price for order in orders)
     return render_template('order.html', orders=orders, grand_total=grand_total)
-
 @app.route('/feedback', methods=['GET', 'POST'])
+@login_required
 def feedback():
     if request.method == 'POST':
-        # Process feedback
-        pass
+        rating = request.form['rating']
+        comments = request.form['comments']
+        
+        new_feedback = Feedback(user_id=current_user.id, rating=rating, comments=comments)
+        
+        try:
+            db.session.add(new_feedback)
+            db.session.commit()
+            flash('Thank you for your feedback!', 'success')
+            return redirect(url_for('feedback'))
+        except Exception as e:
+            db.session.rollback()
+            flash('Error saving feedback. Please try again.', 'danger')
+            print(e)
+    
     return render_template('feedback.html')
 
 @app.route('/color_verification')

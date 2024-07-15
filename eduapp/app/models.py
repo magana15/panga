@@ -1,13 +1,14 @@
 from app import db
 from flask_login import UserMixin
+from datetime import datetime
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(80), unique=False, nullable=False)
+    username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=True)
     password = db.Column(db.String(128), nullable=False)
     role = db.Column(db.String(20), default='user')
-    feedbacks = db.relationship('Feedback', backref='user', lazy=True)
+    feedbacks = db.relationship('Feedback', back_populates='user', lazy=True)
     orders = db.relationship('Order', backref='user', lazy=True)
     is_active = db.Column(db.Boolean(), default=True)
 
@@ -46,6 +47,12 @@ class Feedback(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     rating = db.Column(db.Integer, nullable=False)
     comments = db.Column(db.Text, nullable=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    user = db.relationship('User', back_populates='feedbacks')
+
+    def __repr__(self):
+        return f'<Feedback {self.id}>'
+
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
