@@ -1,9 +1,40 @@
 {% extends 'layout.html' %}
 
+{%block head%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/feedback.css') }}">
+{%endblock%}
+
 {% block content %}
-<h1>Feedback</h1>
-<form method="POST">
-    <!-- Feedback form fields -->
+    <div class="holder">
+        <div class="heading"><h1>Feedback</h1><h2>please help us improve eduwear</h2></div>
+    <div class="container">
+    
+<form method="POST" action="{{ url_for('feedback') }}">
+    <div class="form-group" >
+        <label for="username">Name:</label>
+        <input type="text" id="username" name="username" required>
+    
+    <div class="form-group" >
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+    </div>
+    <div class="form-group">
+        <label for="rating">Rating:</label>
+        <select id="rating" name="rating" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="comments">Comments:</label>
+        <textarea id="comments" name="comments"></textarea>
+    </div>
     <button type="submit">Submit Feedback</button>
 </form>
+</div>
+</div>
+</div>
 {% endblock %}

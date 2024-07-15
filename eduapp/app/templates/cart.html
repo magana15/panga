@@ -1,7 +1,10 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<h1>Your Cart</h1>
+{% block head %}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/cart.css') }}">
+    {% endblock %}
+<h1 class="heading">Your Cart</h1>
 {% if cart_items %}
     <ul>
         {% for item in cart_items %}

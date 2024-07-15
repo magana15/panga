@@ -1,8 +1,9 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f8f8f8;
+    background: rgba(79, 226, 21, 0.137);
     margin: 0;
     padding: 0;
+    text-align: center;
 }
 
 header {

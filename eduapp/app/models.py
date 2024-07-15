@@ -38,6 +38,9 @@ class Uniform(db.Model):
         self.price = price
         self.photo_url = photo_url
 
+    def __repr__(self):
+        return f'<Uniform {self.id} - {self.school_name} ({self.color_code})>'
+
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
