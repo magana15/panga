@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for,session,flash
+from flask import render_template, request, redirect, url_for,session,flash,jsonify
 from flask_login import login_user, logout_user, current_user, login_required, UserMixin
 from app import app, db, login_manager, bcrypt
 from app.models import User, Uniform, Feedback, Order, CartItem
@@ -23,7 +23,7 @@ def login():
 
         if bcrypt.check_password_hash(user.password, password):
             login_user(user)
-            return redirect(url_for('index'))
+            return redirect(url_for('catalog'))
         else:
             return 'failed'
 
@@ -89,13 +89,27 @@ def order():
         return redirect(url_for('order'))
     user_id = current_user.id
     orders = Order.query.filter_by(user_id=user_id).all()
-    return render_template('order.html', orders=orders)
-
+    grand_total = sum(order.total_price for order in orders)
+    return render_template('order.html', orders=orders, grand_total=grand_total)
 @app.route('/feedback', methods=['GET', 'POST'])
+@login_required
 def feedback():
     if request.method == 'POST':
-        # Process feedback
-        pass
+        rating = request.form['rating']
+        comments = request.form['comments']
+        
+        new_feedback = Feedback(user_id=current_user.id, rating=rating, comments=comments)
+        
+        try:
+            db.session.add(new_feedback)
+            db.session.commit()
+            flash('Thank you for your feedback!', 'success')
+            return redirect(url_for('feedback'))
+        except Exception as e:
+            db.session.rollback()
+            flash('Error saving feedback. Please try again.', 'danger')
+            print(e)
+    
     return render_template('feedback.html')
 
 @app.route('/color_verification')
@@ -154,3 +168,33 @@ def add_sample_data():
     db.session.commit()
 
     return 'Sample data added successfully!'
+
+
+#test verify
+@app.route('/add_new')
+def add_new_data():
+    uniforms = Uniform.query.all()
+    for uniform in uniforms:
+        print(uniform)
+        return f'Added new uniform: {uniform}'
+
+
+
+@app.route('/search', methods=['GET'])
+def search():
+    query = request.args.get('query')
+    results = Uniform.query.filter(Uniform.school_name.ilike(f'%{query}%')).all()
+    if results:
+        return jsonify(results=[{
+            'school_name': result.school_name,
+            'color': result.color_code
+        } for result in results])
+    else:
+        return jsonify(results=[])
+
+
+
+
+
+
+

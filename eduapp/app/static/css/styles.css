@@ -1,8 +1,9 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f8f8f8;
+    background: rgba(79, 226, 21, 0.137);
     margin: 0;
-    padding: 0;
+    padding: 0
+    text-align: center;
 }
 
 header {
@@ -24,7 +25,16 @@ header nav ul li {
 header nav ul li a {
     color: white;
     text-decoration: none;
+    font-weight: bold;
 }
+
+ .nav-right {
+            display: flex;
+            align-items: center;
+        }
+ nav a:hover {
+            color: #ffdd57;
+        }
 
 footer {
     background-color: #4CAF50;

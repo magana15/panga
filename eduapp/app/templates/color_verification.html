@@ -1,6 +1,97 @@
-{% extends 'layout.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>verify</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #ff6a00,#51c77e);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.color-comparison {
+    text-align: center;
+    margin-top: 20px;
+}
 
-{% block content %}
-<h1>Color Verification</h1>
-<p>Verify the exact shade of uniform colors.</p>
-{% endblock %}
+.search-bar {
+    margin-bottom: 20px;
+
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    width: 50%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #1a0868;
+    border: none;
+
+    
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+}
+
+.color-swatch {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    border: 1px solid #000;
+}
+
+#comparison-tips {
+    margin-top: 10px;
+    font-size: 14px;
+    color: black;
+}
+
+    </style>
+</head>
+<body>
+    <div class="color-comparison">
+        <h2>Compare Uniform Color</h2>
+        <div class="search-bar">
+            <input type="text" id="school-search" placeholder="Enter school name..."><br>
+            <button onclick="searchSchool()">Search</button>
+        </div>
+        <div id="color-sample">
+            <!-- Color sample will be dynamically inserted here -->
+        </div>
+        <div id="comparison-tips">
+            <p>Compare the color under natural light or white LED light for best results.</p>
+        </div>
+    </div>
+<script>
+    function searchSchool() {
+    const query = document.getElementById('school-search').value;
+    fetch(`/search?query=${query}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.length > 0) {
+                const colorSample = green; // Assuming the color data is in the first result
+                document.getElementById('color-sample').innerHTML = `
+                    <div class="color-swatch" style="background-color: ${colorSample};"></div>
+                    <p>${data[0].school_name}</p>
+                `;
+            } else {
+                document.getElementById('color-sample').innerHTML = '<p>No results found</p>';
+            }
+        });
+}
+
+</script>    
+</body>
+</html>
+

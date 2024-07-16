@@ -1,15 +1,22 @@
 {% extends 'layout.html' %}
 
+
+{%block head%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/order.css') }}">
+{%endblock%}
 {% block content %}
 {% if orders %}
-    <ul>
+    <ul style="list-style-type: none;">
         {% for order in orders %}
         <li>
-            {{ order.uniform.school_name }} - {{ order.uniform.color_code }} - ${{ order.uniform.price }} x {{ order.quantity }}
-            = ${{ order.total_price }}
+            {{ order.uniform.school_name }} - {{ order.uniform.color_code }} - Ksh.{{ order.uniform.price }} x {{ order.quantity }}
+            = Ksh.{{ order.total_price }}
         </li>
         {% endfor %}
     </ul>
+    <div class="grand-total">
+    Grand Total: Ksh.{{ grand_total }}
+</div>
 {% else %}
     <p>You have no orders.</p>
 {% endif %}

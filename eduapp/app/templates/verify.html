@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search School</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/verify.css') }}">
+    
+</head>
+<body>
+    <div class="search-container">
+        <h1>Search for a School</h1>
+        <input type="text" id="school_name" placeholder="Enter school name" oninput="searchSchools()">
+        <div id="suggestions" class="suggestions-box">hello</div>
+        <div id="result" class="result-container">yes</div>
+    </div>
+    
+    <script>
+        function searchSchools() {
+            const query = document.getElementById('school_name').value;
+            fetch(`/search_suggestions?q=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    const suggestionsBox = document.getElementById('suggestions');
+                    suggestionsBox.innerHTML = '';
+                    data.forEach(school => {
+                        const div = document.createElement('div');
+                        div.classList.add('suggestion');
+                        div.textContent = school.name;
+                        div.onclick = () => displaySchool(school);
+                        suggestionsBox.appendChild(div);
+                    });
+                });
+        }
+
+        function displaySchool(school) {
+            const resultContainer = document.getElementById('result');
+            resultContainer.innerHTML = `
+                <h2>${school.name}</h2>
+                <img src="${school.image_url}" alt="${school.name} uniform">
+            `;
+            // Clear suggestions after selection
+            document.getElementById('suggestions').innerHTML = '';
+            // Clear input field after selection
+            document.getElementById('school_name').value = '';
+        }
+    </script>
+</body>
+</html>

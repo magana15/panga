@@ -1,11 +1,107 @@
-{% extends 'layout.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eduwear - Welcome</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+      
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-{% block content %}
-{% if current_user.is_authenticated %}
-<h4>hello {{current_user.username}}!</h4>
-{% else%}
-    <h4>hello!!</h4>
-{%endif%}
-<h1>Welcome to EduWear</h1>
-<p>Your trusted source for school uniforms.</p>
-{% endblock %}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    background-image:  url('{{ url_for('static', filename='images/pens.jpg') }}');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    text-align: center;
+    padding: 100px 0;
+}
+
+header h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+header p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.btn {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+section {
+    padding: 80px 0;
+    text-align: center;
+}
+
+section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+section p {
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Eduwear</h1>
+            <p>Your one-stop shop for school uniforms</p>
+	    <a href="{{ url_for('catalog') }}" class="btn">Explore Now</a>
+        </div>
+    </header>
+
+    <section id="explore">
+        <div class="container">
+            <h2>Explore Our Collection</h2>
+            <p>Find the perfect uniform for your school</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Eduwear. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
