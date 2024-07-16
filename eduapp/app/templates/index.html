@@ -6,14 +6,14 @@
     <title>Eduwear - Welcome</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
-      /* Reset default styles */
+      
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Global styles */
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
@@ -26,7 +26,7 @@ body {
 }
 
 header {
-    background-image: url('pens.jpg'); /* Adjust path as needed */
+    background-image:  url('{{ url_for('static', filename='images/pens.jpg') }}');
     background-size: cover;
     background-position: center;
     color: #fff;
@@ -95,7 +95,6 @@ footer {
         <div class="container">
             <h2>Explore Our Collection</h2>
             <p>Find the perfect uniform for your school</p>
-            <!-- Add more content as needed -->
         </div>
     </section>
 
